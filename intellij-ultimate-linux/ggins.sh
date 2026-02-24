@@ -89,3 +89,7 @@ update-desktop-database "$DESKTOP_DIR" || true
 
 echo "Setup Complete."
 copy_to_clipboard "$AGENT_DIR/Activation Code_Plugins.txt"
+echo "Now open idea and go through the activation proccess. It should open automatically, but it didn't find it under the help menu."
+echo "Then select via Activation key and paste the key. And you should be good to go."
+echo "Thank you for using this script."
+echo "Author: Shayan Salehe"
