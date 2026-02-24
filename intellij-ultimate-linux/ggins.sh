@@ -34,7 +34,7 @@ copy_to_clipboard() {
         echo "Activation code copied to clipboard."
     elif command -v xsel &> /dev/null; then
         xsel --clipboard --input < "$file"
-        echo "Activation code copied to X11 clipboard (via xsel)."
+        echo "Activation code copied to clipboard."
     else
         echo "Clipboard tool (wl-copy/xclip) not found."
         echo "PLEASE MANUALLY COPY THIS CODE:"
