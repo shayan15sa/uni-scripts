@@ -87,6 +87,42 @@ EOF
 ln -sf "$IDEA_DIR/bin/idea.sh" "$BIN_DIR/idea"
 update-desktop-database "$DESKTOP_DIR" || true
 
+
+echo "Installing the JDK..."
+
+if ! command -v java &> /dev/null; then
+    source /etc/os-release
+    echo "Detected OS: $ID"
+
+    case "$ID" in
+        ubuntu|debian|linuxmint)
+            echo "Installing OpenJDK 21 via apt..."
+            sudo apt update && sudo apt install -y openjdk-21-jdk
+            ;;
+        fedora)
+            echo "Installing OpenJDK 21 via dnf..."
+            sudo dnf install -y java-21-openjdk-devel
+            ;;
+        arch|endeavouros|manjaro)
+            echo "Installing OpenJDK 21 via pacman..."
+            sudo pacman -Syu --noconfirm jdk21-openjdk
+            ;;
+        *)
+            if [[ "${ID_LIKE:-}" == *"arch"* ]]; then
+                echo "Arch-based system detected. Installing via pacman..."
+                sudo pacman -Syu --noconfirm jdk21-openjdk
+            elif [[ "${ID_LIKE:-}" == *"debian"* ]] || [[ "${ID_LIKE:-}" == *"ubuntu"* ]]; then
+                echo "Debian/Ubuntu derivative detected. Installing via apt..."
+                sudo apt update && sudo apt install -y openjdk-21-jdk
+            else
+                echo "OS not recognized ($ID). Please install JDK 21 manually."
+            fi
+            ;;
+    esac
+else
+    echo "Java is already installed: $(java -version 2>&1 | head -n 1)"
+fi
+
 echo "Setup Complete."
 copy_to_clipboard "$AGENT_DIR/Activation Code_Plugins.txt"
 echo "Now open idea and go through the activation proccess. It should open automatically, but it didn't find it under the help menu."
